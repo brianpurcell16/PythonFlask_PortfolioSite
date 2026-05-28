@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>{% block title %}Add a New Project{% endblock %}</h2>
+<hr>
+
+<form method="post">
+  <div class="form-group">
+    <label for="title">Project Title *</label>
+    <input type="text" name="title" class="form-control"
+           placeholder="e.g. Sentiment Analysis Tool"
+           value="{{ request.form['title'] }}">
+  </div>
+
+  <div class="form-group">
+    <label for="description">Description *</label>
+    <textarea name="description" class="form-control" rows="4"
+              placeholder="What did you build? What problem did it solve?">{{ request.form['description'] }}</textarea>
+  </div>
+
+  <div class="form-group">
+    <label for="tech_stack">Technologies Used</label>
+    <input type="text" name="tech_stack" class="form-control"
+           placeholder="e.g. Python, Flask, SQLite"
+           value="{{ request.form['tech_stack'] }}">
+  </div>
+
+  <div class="form-group">
+    <label for="github_url">GitHub URL</label>
+    <input type="url" name="github_url" class="form-control"
+           placeholder="https://github.com/yourusername/project"
+           value="{{ request.form['github_url'] }}">
+  </div>
+
+  <button type="submit" class="btn btn-primary">Add Project</button>
+  <a href="{{ url_for('projects') }}" class="btn btn-secondary ml-2">Cancel</a>
+</form>
+{% endblock %}

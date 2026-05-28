@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="jumbotron text-center">
+  <h1 class="display-4">
+  <i class="fa-solid fa-code"></i>
+    Hi I'm Brian Purcell, Thank you for visiting my site
+  </h1>
+  <p class="lead">
+    I am a recent graduate in Computing with software development, I am passionate about making software no matter the language and thrive on getting to learn new languages and tools which I may have never even seen
+  </p>
+  <hr class="my-4">
+  <p>Based in County Kerry Ireland. Open to any roles.</p>
+  <a class="btn btn-primary btn-lg" href="{{ url_for('projects') }}" role="button">
+    View My Projects
+  </a>
+  <a class="btn btn-primary btn-lg" href="{{ url_for('about') }}" role="button">
+    To learn more about me and get contact information
+  </a>
+
+  <a class="btn btn-primary btn-lg" href="{{ url_for('static', filename='BrianPurcell-CV.pdf') }}" role="button">
+    Click here to download my CV
+  </a>
+</div>
+
+<div class="row text-center mt-4">
+  <div class="col-md-4">
+    <h4><i class="fa-solid fa-laptop-code"></i> Languages</h4>
+    <p>Python, Java, JavaScript, SQL, C#</p>
+  </div>
+  <div class="col-md-4">
+    <h4><i class="fa-solid fa-screwdriver-wrench"></i> Tools & Frameworks</h4>
+    <p>Flask, NumPy, Git, Docker, Maven, Jenkins, Visual Studio, SQL Server, Oracle</p>
+  </div>
+  <div class="col-md-4">
+    <h4><i class="fa-solid fa-graduation-cap"></i> Education</h4>
+    <p>BSc Computing, Munster Technological University, 2026</p>
+  </div>
+</div>
+{% endblock %}
