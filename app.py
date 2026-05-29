@@ -1,9 +1,31 @@
 import sqlite3
 from flask import Flask, render_template, request, url_for, flash, redirect
 from werkzeug.exceptions import abort
+from werkzeug.security import check_password_hash, generate_password_hash
+from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'flaskportfolioprojectpython'
+
+# Flask login setup 
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = 'login' #gets redirected if not logged in
+
+
+# Hardcodding an admin user in
+class User(UserMixin):
+    def __init__(self,id):
+        self.id = id
+
+ADMIN_USERNAME = 'admin'
+ADMIN_PASSWORD_HASH = generate_password_hash('admin')
+
+@login_manager.user_loader
+def load_user(user_id):
+    if user_id == ADMIN_USERNAME:
+        return User(user_id)
+    return None
 
 #Helper commands for the database
 
@@ -41,7 +63,33 @@ def project(project_id):
 def about():
     return render_template('about.html')
 
+#Routes for login and logout
+
+@app.route('/login', methods=('GET', 'POST'))
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+
+        if username == ADMIN_USERNAME and check_password_hash(ADMIN_PASSWORD_HASH, password):
+            login_user(User(username))
+            return redirect(url_for('projects'))
+        else:
+            flash('Incorrect username or password')
+
+    return render_template('login.html')
+
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    flash('You have been logged out')
+    return redirect(url_for('index'))
+
+
+#These routes are protected meaning the user must be logged in
 @app.route('/create', methods=('GET', 'POST'))
+@login_required
 def create():
     if request.method == 'POST':
         title = request.form['title']
@@ -65,6 +113,7 @@ def create():
     return render_template('create.html')
 
 @app.route('/<int:id>/edit', methods=('GET', 'POST'))
+@login_required
 def edit(id):
     selectedProject = get_project(id)
 
@@ -91,6 +140,7 @@ def edit(id):
 
 
 @app.route('/<int:id>/delete', methods=('POST',))
+@login_required
 def delete(id):
     selectedProject = get_project(id)
     conn = get_db_connection()

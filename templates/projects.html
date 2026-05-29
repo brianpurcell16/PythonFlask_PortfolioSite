@@ -23,8 +23,10 @@
 
       <a href="{{ url_for('project', project_id=p['id']) }}"
          class="btn btn-sm btn-outline-primary ml-1">Details</a>
-      <a href="{{ url_for('edit', id=p['id']) }}"
-         class="btn btn-sm btn-outline-warning ml-1">Edit</a>
+      {% if current_user.is_authenticated %}
+        <a href="{{ url_for('edit', id=p['id']) }}"
+           class="btn btn-sm btn-outline-warning ml-1">Edit</a>
+      {% endif %}
     </div>
     <div class="card-footer text-muted">
       Added: {{ p['created'] }}

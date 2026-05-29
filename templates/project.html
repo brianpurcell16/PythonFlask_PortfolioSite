@@ -17,6 +17,8 @@
   </a>
 {% endif %}
 
-<a href="{{ url_for('edit', id=project['id']) }}" class="btn btn-warning ml-2">Edit</a>
+{% if current_user.is_authenticated %}
+  <a href="{{ url_for('edit', id=project['id']) }}" class="btn btn-warning ml-2">Edit</a>
+{% endif %}
 <a href="{{ url_for('projects') }}" class="btn btn-secondary ml-2">← Back to Projects</a>
 {% endblock %}
